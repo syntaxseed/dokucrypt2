@@ -1,0 +1,17 @@
+.dokucrypt2pw_prompt {
+  position:fixed;
+    left: 50%;
+    top:50%;
+    margin-left:-100px;
+    padding:15px;
+    width:200px;
+    border:1px solid black;
+	background-color:white;
+}
+.dokucrypt2pw_prompt label {
+    display:block; 
+    margin-bottom:5px;
+}
+.dokucrypt2pw_prompt input {
+    margin-bottom:10px;
+}

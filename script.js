@@ -238,15 +238,59 @@ function toggleCryptDiv(elemid,lock,ctext) {
       crypt_keys[lock]=undefined;
    } else if (atag.innerHTML==ctStr) {
       // decrypt text
-      if((ptext=verifyDecrypt(ctext,lock,false))===false) {
-         alert("unable to find key for lock " + lock);
-         return;
+      
+      // create callback function for handling the submit button in the password prompt
+	  verifyDecrypt_function = function(password) {
+        key = password;
+		if(key===null) { alert("unable to find key for lock " + lock); return; } // user hit cancel
+		if(!(ptext=decryptTextString(ctext,key))) {
+			alert("failed to decrypt with provided key");
+			return;
+		} else {
+          crypt_keys[lock]=key;
+          elem.innerHTML=ptext;
+          atag.innerHTML=ptStr;
+          // make it visible
+          elem.style.visibility="visible";
+          elem.style.position="relative";
+	        
+          if (JSINFO["plugin_dokucrypt2_CONFIG_copytoclipboard"] == 1) {
+            //put it into the clipboard
+            copyToClipboard(ptext).then(() => {
+              if (JSINFO['plugin_dokucrypt2_CONFIG_hidepasswordoncopytoclipboard']) {
+                elem.innerHTML = "{" + JSINFO['plugin_dokucrypt2_TEXT_copied_to_clipboard'] + "}";
+              } else {
+                elem.innerHTML += " {" + JSINFO['plugin_dokucrypt2_TEXT_copied_to_clipboard'] + "}";
+              };
+              console.log('Encrypted value has been copied to the clipboard.');
+            }).catch(() => {
+              console.log('Encrypted value could not be copied to the clipboard.');
+            });
+	      }
+		}
+      };
+      
+	  // now test if there is a key cached for the given lock - if no key can be determined, show password prompt
+	  key = false;
+      if(undefined!==crypt_keys[lock]) { key=crypt_keys[lock]; }
+      if(key===false && (undefined===crypt_keys[lock])) {
+          pw_prompt({
+	      lm:"Enter passphrase for lock " + lock, 
+		  elem:elem,
+          callback:verifyDecrypt_function
+        });
+	  } else {
+        var xkey=key;
+        if(key===false) { xkey=crypt_keys[lock]; }
+        if(!(ptext=decryptTextString(ctext,xkey))) {
+          if(key!==false) { alert("failed to decrypt with provided key"); }
+          return;
+        } else {
+          verifyDecrypt_function(key);
+        }
       }
-      elem.innerHTML=ptext;
-      atag.innerHTML=ptStr;
-      // make it visible
-      elem.style.visibility="visible";
-      elem.style.position="relative";
+      
+	  
    } else { alert("Broken"); return; }
 }
 
@@ -318,7 +362,7 @@ function encryptMixedText(x) {
   return(ret);
 }
 
-function verifyDecrypt(ctext,lock,key) {
+/*function verifyDecrypt(ctext,lock,key) {
   var ptext=null;
   if(undefined!==crypt_keys[lock]) { key=crypt_keys[lock]; }
   if(key===false && (undefined===crypt_keys[lock])) {
@@ -344,7 +388,7 @@ function verifyDecrypt(ctext,lock,key) {
     }
   }
   return(ptext);
-}
+}*/
 function decryptBlock(data,key) {
   var tagend=0, ptend=0, lock=null, ptext;
   if((tagend=data.indexOf(">"))==-1) {
@@ -2168,3 +2212,74 @@ function decode_utf8(s) {
   return s;
 }
 // END: javscrypt/utf-8.js
+
+// protected password prompt adapted from: https://stackoverflow.com/a/28461750/19144619
+var promptCount = 0;
+var prompt = null;
+var label = null;
+var input = null;
+var submit_button = null;
+var cancel_button = null;
+var submit_event = null;
+var cancel_event = null;
+window.pw_prompt = function(options) {
+    var lm = options.lm || "Password:",
+        bm = options.bm || "Submit",
+        cm = options.cm || "Cancel",
+		elem = options.elem || document.body;
+    if(!options.callback) { 
+        alert("No callback function provided! Please provide one.") 
+    };
+
+    if (prompt == null) {
+        prompt = document.createElement("div");
+        prompt.className = "dokucrypt2pw_prompt";
+        
+        label = document.createElement("label");
+        label.textContent = lm;
+        label.for = "pw_prompt_input";
+        prompt.appendChild(label);
+    
+        input = document.createElement("input");
+        input.id = "pw_prompt_input";
+        input.type = "password";
+        prompt.appendChild(input);
+    
+        submit_button = document.createElement("button");
+        prompt.appendChild(submit_button);
+    
+        cancel_button = document.createElement("button");
+        prompt.appendChild(cancel_button);
+    } else {
+        //remove event listeners
+        submit_button.removeEventListener("click", submit_event);
+        cancel_button.removeEventListener("click", cancel_event);
+	}
+	
+    submit_event = function() {
+        options.callback(input.value);
+        if (prompt.parentNode)
+            prompt.parentNode.removeChild(prompt);
+    };
+    cancel_event = function() {
+        if (prompt.parentNode)
+            prompt.parentNode.removeChild(prompt);
+    };
+    label.textContent = lm;
+	input.value = "";
+    input.addEventListener("keyup", function(e) {
+        if (e.keyCode == 13) submit_event();
+    }, false);
+    submit_button.textContent = bm;
+    submit_button.addEventListener("click", submit_event, false);
+    cancel_button.textContent = cm;
+    cancel_button.addEventListener("click", cancel_event, false);
+
+    if(elem.nextSibling){
+        elem.parentNode.insertBefore(prompt,elem.nextSibling);
+    }else{
+        elem.parentNode.appendChild(prompt);
+    }
+	
+	input.focus();
+};
