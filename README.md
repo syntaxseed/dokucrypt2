@@ -1,9 +1,9 @@
 # DokuWiki Plugin: DokuCrypt2
 
 <div align="center">
-    <a href="https://twitter.com/intent/follow?screen_name=syntaxseed">
-        <img src="https://img.shields.io/twitter/follow/syntaxseed.svg?style=social&logo=twitter"
-            alt="follow on Twitter"></a>&nbsp;&nbsp;<a href="https://syntaxseed.com/about/donate"><img src="https://img.shields.io/badge/Sponsor-Project-blue" alt="Sponsor Project" /></a>
+    <a href="https://phpc.social/@syntaxseed">
+        <img src="https://img.shields.io/mastodon/follow/11361?domain=https%3A%2F%2Fphpc.social"
+            alt="follow on Mastodon"></a>&nbsp;&nbsp;<a href="https://github.com/syntaxseed#donatecontribute"><img src="https://img.shields.io/badge/Sponsor-Project-blue" alt="Sponsor Project" /></a>
 </div>
 
 This is a plugin for DokuWiki to support client side cryptography.
