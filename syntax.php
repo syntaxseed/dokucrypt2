@@ -32,7 +32,7 @@ class syntax_plugin_dokucrypt2 extends DokuWiki_Syntax_Plugin
         return array(
             'author' => 'Scott Moser, Maintainer Sherri Wheeler',
             'email'  => 'Twitter @SyntaxSeed or http://SyntaxSeed.com',
-            'date'   => '2022-02-02',
+            'date'   => '2024-05-01',
             'name'   => 'Client Side Encryption Plugin',
             'desc'   => 'Client side cryptography enabling encrypting blocks of text within a wiki page.',
             'url'    => 'https://www.dokuwiki.org/plugin:dokucrypt2',

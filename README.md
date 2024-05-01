@@ -34,6 +34,7 @@ This plugin includes configuration settings.
 
 ## ChangeLog
 
+* 2024-05-01: PR from **t-oster** to prevent bugs when encrypted text contains html.
 * 2022-08-08: Added ability and setting for copying the contents to the clipboard on decrypt.
   * Contributed by Thomas Schäfer (https://github.com/ternite).
 * 2022-02-02: Preparatory fixes/testing for PHP 8. Improvements for code style PSRs.

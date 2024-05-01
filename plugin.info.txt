@@ -1,7 +1,7 @@
 base   dokucrypt2
 author By Scott Moser, Maintained by Sherri Wheeler
 email  Twitter @SyntaxSeed or http://SyntaxSeed.com
-date   2022-08-08
+date   2024-05-01
 name   DokuCrypt 2
 desc   Client side cryptography enabling encrypting blocks of text within a wiki page.
 url    https://www.dokuwiki.org/plugin:dokucrypt2
