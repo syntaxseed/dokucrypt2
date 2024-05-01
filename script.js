@@ -242,7 +242,7 @@ function toggleCryptDiv(elemid,lock,ctext) {
          alert("unable to find key for lock " + lock);
          return;
       }
-      elem.innerHTML=ptext;
+      elem.textContent=ptext;
       atag.innerHTML=ptStr;
       // make it visible
       elem.style.visibility="visible";
