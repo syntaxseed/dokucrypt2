@@ -6,6 +6,8 @@
             alt="follow on Mastodon"></a>&nbsp;&nbsp;<a href="https://github.com/syntaxseed#donatecontribute"><img src="https://img.shields.io/badge/Sponsor-Project-blue" alt="Sponsor Project" /></a>
 </div>
 
+> THIS PLUGIN IS NO LONGER MAINTAINED. Please see: https://www.dokuwiki.org/plugin:dokucrypt3 for an unofficial replacement. Please use at your own discretion.
+
 This is a plugin for DokuWiki to support client side cryptography.
 
 * https://www.dokuwiki.org/plugin:dokucrypt2
